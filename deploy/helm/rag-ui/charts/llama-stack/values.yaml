@@ -167,3 +167,7 @@ mcp-servers:
   weather:
     enabled: true
     uri: http://mcp-servers-weather:8000/sse
+  elasticsearch:
+    enabled: true
+    uri: http://supergateway-service:8000/sse
+    

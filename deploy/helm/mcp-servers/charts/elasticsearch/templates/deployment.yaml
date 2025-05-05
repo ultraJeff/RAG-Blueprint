@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supergateway
+  namespace: llama-stack-rag
+  labels:
+    app: supergateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: supergateway
+  template:
+    metadata:
+      labels:
+        app: supergateway
+    spec:
+      containers:
+      - name: supergateway
+        image: supercorp/supergateway:latest
+        command: ["supergateway"]
+        args: 
+        - "--stdio"
+        - "npx -y @elastic/mcp-server-elasticsearch"
+        - "--port"
+        - "8000"
+        env:
+        - name: NPM_CONFIG_CACHE
+          value: /tmp/.npm
+        - name: ES_URL
+          value: "https://elasticsearch-sample-es-http.monitoring.svc.cluster.local:9200"
+        - name: ES_USERNAME
+          value: "elastic"
+        - name: ES_PASSWORD
+          value: ""
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
